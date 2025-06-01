@@ -1,10 +1,21 @@
-language: python
-before_install:
-- chmod +x ./flaskapp/st.sh
+version: 1.0.{build}
+image: Visual Studio 2019  # Или Ubuntu, если нужен Linux
+environment:
+  PYTHON: "C:\\Python38"  # Укажите вашу версию Python
+  FLASK_APP: "flaskapp\\app.py"  # Путь к главному файлу Flask
+
 install:
-- pip3 install flask
-- pip3 install gunicorn
-- pip3 install requests
-script:
-- cd flaskapp 
-- ./st.sh
+  - ps: >-
+      if (-not (Test-Path $env:PYTHON)) {
+        choco install python --version 3.8.0  # Установка Python через Chocolatey
+      }
+  - python -m pip install --upgrade pip
+  - pip install flask gunicorn requests  # Установка зависимостей
+
+build_script:
+  - python --version
+  - pip list  # Проверка установленных пакетов
+
+test_script:
+  - cd flaskapp
+  - bash ./st.sh  # Запуск скрипта через bash (если sh-скрипт)
