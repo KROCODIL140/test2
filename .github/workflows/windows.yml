@@ -1,0 +1,19 @@
+name: Windows CI/CD
+on: [push, pull_request]  # Триггеры
+
+jobs:
+  build:
+    runs-on: windows-latest  # Windows Server 2022
+    steps:
+      - uses: actions/checkout@v4  # Клонирует репозиторий
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip install flask gunicorn
+      - name: Run Flask app
+        run: |
+          cd flaskapp
+          bash ./st.sh  # Или .\st.bat для Windows
